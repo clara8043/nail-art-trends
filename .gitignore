@@ -1,0 +1,5 @@
+
+config/config.py
+.vscode/launch.json
+.vscode/settings.json
+config/__pycache__/config.cpython-38.pyc
