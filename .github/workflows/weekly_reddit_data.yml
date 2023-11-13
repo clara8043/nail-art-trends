@@ -37,8 +37,8 @@ jobs:
         run: |-
           git config user.name "clara8043"
           git config user.email "clara8043@gmail.com"
-          git pull
           git add -A
           timestamp=$(date -u)
           git commit -m "Get weekly top reddit data: ${timestamp}" || exit 0
+          git pull
           git push
