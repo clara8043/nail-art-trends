@@ -1,8 +1,6 @@
 import sys
 import pandas as pd
 import os
-import requests
-import time
 import praw
 from datetime import date
 from datetime import timedelta 
@@ -11,11 +9,11 @@ import config.config as reddit
 
 #config
 reddit = praw.Reddit(
-    client_id=reddit.client_id,
-    client_secret=reddit.client_secret,
-    password=reddit.password,
-    username=reddit.username,
-    user_agent=reddit.user_agent
+    client_id = os.environ['CLIENT_ID'],
+    client_secret = os.environ['CLIENT_SECRET'],
+    password = os.environ['PASSWORD'],
+    username = os.environ['USERNAME'],
+    user_agent = os.environ['USER_AGENT']
 )
 
 def get_new_submission(subreddits):
@@ -28,7 +26,7 @@ def get_new_submission(subreddits):
 
 def main():
     week = date.today() - timedelta(date.today().weekday()) + timedelta(6)
-    file_name = week.strftime('%Y_%m_%d') + ".xlsx"
+    file_name = sys.path[0]+ "/../data/" + week.strftime('%Y_%m_%d') + ".xlsx"
     subreddits = ['Nails', 'RedditLaqueristas', 'NailArt']
 
     # Get pre-existing posts if file for this week exists
@@ -48,6 +46,11 @@ def main():
     #Concat all and save 
     all_posts_df = pd.concat([all_posts_df,new_posts_df],ignore_index=True)
     all_posts_df['id'] = all_posts_df['id'].astype(str)
-    all_posts_df.to_excel(file_name, sheet_name = "new",index=False, encoding='utf-8-sig', engine='xlsxwriter')
+
+    if os.path.isfile(file_name) :
+        with pd.ExcelWriter(file_name, mode="a", if_sheet_exists="overlay") as writer:
+            all_posts_df.to_excel(writer, sheet_name = "new", index=False)
+    else :
+        all_posts_df.to_excel(file_name, sheet_name = "new", index=False)
 
 main()
