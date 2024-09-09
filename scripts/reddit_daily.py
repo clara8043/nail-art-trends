@@ -7,7 +7,6 @@ from datetime import timedelta
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 #import config.config as reddit
 
-#config
 reddit = praw.Reddit(
     client_id = os.environ['CLIENT_ID'],
     client_secret = os.environ['CLIENT_SECRET'],
@@ -26,7 +25,7 @@ def get_new_submission(subreddits):
 
 def main():
     week = date.today() - timedelta(date.today().weekday()) + timedelta(6)
-    file_name = sys.path[0]+ "/../data/" + week.strftime('%Y_%m_%d') + ".xlsx"
+    file_name = sys.path[0]+ "/../data/collected_data/" + week.strftime('%Y_%m_%d') + ".xlsx"
     subreddits = ['Nails', 'RedditLaqueristas', 'NailArt']
 
     # Get pre-existing posts if file for this week exists
