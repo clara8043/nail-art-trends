@@ -31,7 +31,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           USERNAME: ${{ secrets.USERNAME }}
           USER_AGENT: ${{ secrets.USER_AGENT }}
-        run: python ./src/reddit_weekly.py
+        run: python ./scripts/reddit_weekly.py
         
       - name: Commit and push if it changed
         run: |-
