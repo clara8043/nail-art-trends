@@ -6,13 +6,19 @@ from datetime import date
 from datetime import timedelta 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
-try:
-    from config.config import RedditConfig
-except ImportError:
-    pass
+is_github_actions = os.environ.get("GITHUB_ACTIONS") == "true"
 
 def connect_reddit() : 
-    if(os.getenv("GITHUB_ACTIONS") != False) :
+    if(is_github_actions) :
+        reddit = praw.Reddit(
+        client_id = os.environ['CLIENT_ID'],
+        client_secret = os.environ['CLIENT_SECRET'],
+        password = os.environ['PASSWORD'],
+        username = os.environ['USERNAME'],
+        user_agent = os.environ['USER_AGENT']
+        )
+    else :
+        from config.config import RedditConfig
         reddit_config = RedditConfig()
         reddit = praw.Reddit(
             client_id = reddit_config.CLIENT_ID,
@@ -21,15 +27,8 @@ def connect_reddit() :
             username = reddit_config.USERNAME,
             user_agent = reddit_config.USER_AGENT
         )
-    else :
-        reddit = praw.Reddit(
-        client_id = os.environ['CLIENT_ID'],
-        client_secret = os.environ['CLIENT_SECRET'],
-        password = os.environ['PASSWORD'],
-        username = os.environ['USERNAME'],
-        user_agent = os.environ['USER_AGENT']
-        )
-    return reddit    
+        
+    return reddit
 
 def get_new_submission(subreddits, reddit):
     all_submission = []

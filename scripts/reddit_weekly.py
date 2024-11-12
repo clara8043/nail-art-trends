@@ -9,11 +9,6 @@ from config.config import reddit
 
 is_github_actions = os.environ.get("GITHUB_ACTIONS") == "true"
 
-try:
-    from config.config import RedditConfig
-except ImportError:
-    pass
-
 def connect_reddit() : 
     if(is_github_actions) :
         reddit = praw.Reddit(
@@ -24,6 +19,7 @@ def connect_reddit() :
         user_agent = os.environ['USER_AGENT']
         )
     else :
+        from config.config import RedditConfig
         reddit_config = RedditConfig()
         reddit = praw.Reddit(
             client_id = reddit_config.CLIENT_ID,
