@@ -5,7 +5,11 @@ import praw
 from datetime import date
 from datetime import timedelta 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from config.config import RedditConfig
+
+try:
+    from config.config import RedditConfig
+except ImportError:
+    pass
 
 def connect_reddit() : 
     if(os.getenv("GITHUB_ACTIONS") != False) :
