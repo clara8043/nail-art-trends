@@ -5,7 +5,6 @@ import praw
 from datetime import date
 from datetime import timedelta 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from config.config import reddit
 
 is_github_actions = os.environ.get("GITHUB_ACTIONS") == "true"
 
